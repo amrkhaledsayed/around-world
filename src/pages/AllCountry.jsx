@@ -1,4 +1,3 @@
-import { Atom } from "react-loading-indicators";
 import CountryList from "../components/CountryList";
 import RegionMenu from "../components/RegionMenu";
 import SearchInput from "../components/SearchInput";
@@ -15,8 +14,10 @@ const AllCountry = () => {
     setFilterDataByRegion,
     FilterDataByRegion,
   } = useFetchData();
-  
-  loading && <LoadingState />;
+
+if (loading) {
+    return <LoadingState />;
+}
 
   if (isError) {
     return (

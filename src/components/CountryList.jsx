@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import EmptySearch from "./EmptySearch";
 
 const CountryList = (props) => {
-  const { data } = props;
+  const { data ,loading} = props;
   if (!data || data.length === 0) {
     return <EmptySearch />;
   }
