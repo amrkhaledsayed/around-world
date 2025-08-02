@@ -5,16 +5,12 @@ import LoadingState from "../components/loadingState";
 import NoPage from "../components/Nopage";
 const DetailsPage = () => {
   const { country } = useParams();
-  console.log(country);
   const decodedName = decodeURIComponent(country);
-  console.log(decodedName);
 
-  const { data, loading } = useFetchData(decodedName);
-  console.log(data);
-  console.log(loading);
+  const { data, loading ,isError} = useFetchData(decodedName);
 
-  if (loading) return <LoadingState />;
-  if (!data) return <NoPage />;
+  if (loading) {return <LoadingState />}
+  if (!data || isError) {return <NoPage />}
   return (
     <div className="m-auto flex flex-col gap-[73px] px-5.5 sm:px-[84px]">
       <Link to={".."}>
