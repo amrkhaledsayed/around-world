@@ -15,6 +15,7 @@ const AllCountry = () => {
     setFilterDataByRegion,
     FilterDataByRegion,
   } = useFetchData();
+  
   loading && <LoadingState />;
 
   if (isError) {
