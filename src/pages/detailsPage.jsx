@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useFetchData } from "../useFetchData";
 import LoadingState from "../components/loadingState";
+import NoPage from "../components/Nopage";
 const DetailsPage = () => {
   const { country } = useParams();
   console.log(country);
@@ -12,8 +13,8 @@ const DetailsPage = () => {
   console.log(data);
   console.log(loading);
 
-  (loading || !data) && <LoadingState />;
-
+  if (loading) return <LoadingState />;
+  if (!data) return <NoPage />;
   return (
     <div className="m-auto flex flex-col gap-[73px] px-5.5 sm:px-[84px]">
       <Link to={".."}>
