@@ -1,0 +1,62 @@
+:root {
+  --text-color-dark: #111827;
+  --text-color-white: #ffffff;
+  --background-color-white: #ffffff;
+  --background-color-off-white: #f3f4f6;
+  --background-color-primary: #1f2937;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --font-inter: "Inter", sans-serif;
+}
+
+@utilities {
+  .font-inter {
+    font-family: var(--font-inter);
+  }
+}
+#root {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+* {
+  scrollbar-color: unset !important;
+  scrollbar-width: unset;
+}
+body {
+  background-color: var(--background-color-off-white);
+  overflow-x: hidden;
+}
+@layer components {
+  .info-row {
+    @apply flex flex-1 items-center gap-0.5;
+  }
+
+  .info-label {
+    @apply text-[16px] font-semibold text-nowrap text-[var(--text-color-dark)];
+  }
+
+  .info-value {
+    @apply text-[16px] font-light text-nowrap text-[var(--text-color-dark)];
+  }
+}
+.custom-select__control:hover {
+  background-color: rgba(255, 255, 255, 0.068);
+  color: #1f2937;
+  cursor: pointer;
+}
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+.dark {
+  --text-color-dark: #f3f4f6;
+  --text-color-white: #0a0b0f;
+  --background-color-white: #1f2937;
+  --background-color-off-white: #111827;
+  --background-color-primary: #000000;
+}
