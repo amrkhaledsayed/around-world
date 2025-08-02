@@ -1,6 +1,6 @@
 const NoPage = () => {
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-6 py-20">
+    <div className="flex w-full flex-col items-center justify-center gap-6 py-20 m-auto max-w-[95rem] px-6 sm:px-10 md:px-10 lg:px-[84px]">
       <svg
         width="775"
         height="342"
