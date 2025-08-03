@@ -47,7 +47,7 @@ const SearchInput = (props) => {
       />
       <label
         htmlFor="search-input"
-        className="absolute right-[3%] md:right-[1.5%] ltr:left-[1.2%] md:ltr:left-[1.2%]"
+        className="absolute right-[2.5%] md:right-[1.5%] ltr:left-[1.2%] md:ltr:left-[1.2%]"
       >
         <CiSearch className="align-baseline text-[26px] text-[var(--text-color-dark)]" />
       </label>
