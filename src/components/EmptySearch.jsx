@@ -1,4 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 const EmptySearch = () => {
+  const { t } = useTranslation();
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-6 py-2">
       <svg
@@ -76,7 +79,7 @@ const EmptySearch = () => {
         />
       </svg>
       <p className="text-center text-[24px] leading-[36px] font-extrabold text-[var(--text-color-dark)]">
-        No results found
+        {t("No results found")}
       </p>
     </div>
   );

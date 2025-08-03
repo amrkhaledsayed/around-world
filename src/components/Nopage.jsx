@@ -1,6 +1,9 @@
+import { useTranslation } from "react-i18next";
+
 const NoPage = () => {
+  const { t } = useTranslation();
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-6 py-20 m-auto max-w-[95rem] px-6 sm:px-10 md:px-10 lg:px-[84px]">
+    <div className="m-auto flex w-full max-w-[95rem] flex-col items-center justify-center gap-6 px-6 py-20 sm:px-10 md:px-10 lg:px-[84px]">
       <svg
         width="775"
         height="342"
@@ -123,7 +126,7 @@ const NoPage = () => {
         />
       </svg>
       <p className="text-center text-gray-500">
-        The page you are looking for does not exist.
+        {t("The page you are looking for does not exist.")}
       </p>
     </div>
   );
