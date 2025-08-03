@@ -1,8 +1,8 @@
 import CountryList from "../components/CountryList";
 import RegionMenu from "../components/RegionMenu";
 import SearchInput from "../components/SearchInput";
-import { useFetchData } from "../useFetchData";
 import LoadingState from "../components/loadingState";
+import { useFetchData } from "../utils/useFetchData";
 
 const AllCountry = () => {
   const {
@@ -15,9 +15,9 @@ const AllCountry = () => {
     FilterDataByRegion,
   } = useFetchData();
 
-if (loading) {
+  if (loading) {
     return <LoadingState />;
-}
+  }
 
   if (isError) {
     return (

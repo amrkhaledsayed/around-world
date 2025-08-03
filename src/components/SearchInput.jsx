@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 
 const SearchInput = (props) => {
   const { data, setFilteredData, filterDataByRegion } = props;
   const [inputValue, setInputValue] = useState("");
+  const { t } = useTranslation();
 
   const onChangeHandler = (e) => {
     const searchTerm = e.target.value;
@@ -17,26 +19,39 @@ const SearchInput = (props) => {
     const filteredBySearch =
       !searchTerm || searchTerm.trim() === ""
         ? baseData
-        : baseData.filter((country) =>
-            country.name.common
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()),
-          );
+        : baseData.filter((country) => {
+            const nameEn = country.name.common.toLowerCase();
+            const nameAr = t(`Countries.${country.name.common}`, {
+              defaultValue: country.name.common,
+            }).toLowerCase();
+
+            return (
+              nameEn.includes(searchTerm.toLowerCase()) ||
+              nameAr.includes(searchTerm.toLowerCase())
+            );
+          });
 
     setFilteredData(filteredBySearch);
   };
 
   return (
-    <div className="relative w-[100%]">
+    <form className="relative flex w-[100%] items-center rounded-[115px]">
       <input
         type="text"
         value={inputValue}
         onChange={onChangeHandler}
-        placeholder="Search for a country…"
-        className="h-[56px] w-[100%] max-w-[480px] rounded-[115px] bg-[var(--background-color-white)] pl-10 text-[var(--text-color-dark)] shadow-xl outline-none placeholder:text-[var(--text-color-dark)] md:w-[480px]"
+        id="search-input"
+        name="search-input"
+        placeholder={t("Search for a country...")}
+        className="h-[56px] w-[100%] max-w-[480px] rounded-[115px] bg-[var(--background-color-white)] px-10 text-[var(--text-color-dark)] shadow-xl outline-none placeholder:text-[var(--text-color-dark)] md:w-[480px]"
       />
-      <CiSearch className="absolute top-0 left-[10px] translate-y-[50%] text-[26px] text-[var(--text-color-dark)]" />
-    </div>
+      <label
+        htmlFor="search-input"
+        className="absolute right-[3%] md:right-[1.5%] ltr:left-[1.2%] md:ltr:left-[1.2%]"
+      >
+        <CiSearch className="align-baseline text-[26px] text-[var(--text-color-dark)]" />
+      </label>
+    </form>
   );
 };
 export default SearchInput;

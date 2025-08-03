@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IoIosSunny, IoMdMoon } from "react-icons/io";
-import theme from "../utils";
+import theme from "../utils/utils";
 
 const ThemeSwitcher = () => {
   const [active, setActive] = useState("");

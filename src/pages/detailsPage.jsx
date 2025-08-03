@@ -1,10 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { useFetchData } from "../useFetchData";
+import { useFetchData } from "../utils/useFetchData";
 import LoadingState from "../components/loadingState";
 import NoPage from "../components/Nopage";
+import { useTranslation } from "react-i18next";
 
 const DetailsPage = () => {
+  const { t } = useTranslation();
   const { country } = useParams();
   const decodedName = decodeURIComponent(country);
 
@@ -12,91 +14,135 @@ const DetailsPage = () => {
 
   if (loading) return <LoadingState />;
   if (!data || isError) return <NoPage />;
+  console.log(data);
 
-  const isZionistEntity = data?.name?.common === "Israel";
+  const isZionistEntity = data?.name?.common?.toLowerCase() === "israel";
+
+  const countryName = data?.name?.common;
+  const nativeName = data?.name?.official;
+  const population = data?.population;
+  const region = data?.region;
+  const capital = data?.capital?.[0];
+  const tld = data?.tld?.[0];
+  const currencies = data?.currencies;
+
+  const translateKey = (prefix, key) => {
+    return key ? t(`${prefix}.${key}`, { defaultValue: key }) : "N/A";
+  };
 
   return (
-    <div className="m-auto flex flex-col gap-[73px] px-5.5 sm:px-[84px]">
+    <div className="flex flex-col gap-[73px] px-5.5 sm:px-[84px]">
       <Link to={".."}>
-        <IoIosArrowRoundBack className="rounded-[8px] bg-[var(--background-color-white)] text-4xl text-[var(--text-color-dark)]" />
+        <IoIosArrowRoundBack className="rounded-[8px] bg-[var(--background-color-white)] text-4xl text-[var(--text-color-dark)] rtl:rotate-180" />
       </Link>
 
-      <div className="flex flex-col flex-wrap justify-between gap-[20px] md:flex-row md:items-center md:gap-5 lg:flex-row">
+      <div className="flex max-w-[276px] flex-col flex-wrap justify-between sm:max-w-full md:flex-row md:items-start md:gap-5 lg:flex-row">
         <img
-          src={data?.flags?.svg}
-          alt={data?.flags?.alt || data?.name?.common}
-          className="h-[100%] w-full rounded-[8px] md:w-[500px]"
+          src={
+            data?.flags?.svg === "https://flagcdn.com/il.svg"
+              ? "https://placehold.co/276x200/2c333e/FFFFFF.png"
+              : data?.flags?.svg
+          }
+          alt={data?.flags?.alt || countryName}
+          className="h-[100%] max-w-[276px] rounded-[8px] object-cover md:w-full md:max-w-[500px]"
         />
 
         <div className="flex flex-col gap-4">
-          <h1 className="text-[32px] font-extrabold text-[var(--text-color-dark)]">
-            {isZionistEntity ? "Occupied Palestinian Territory" : data?.name?.common || "No name"}
+          <h1 className="text-3xl font-extrabold text-[var(--text-color-dark)]">
+            {isZionistEntity
+              ? t("Occupied Palestinian")
+              : translateKey("Countries", countryName)}
           </h1>
 
           {isZionistEntity ? (
             <div className="flex flex-col gap-[10px]">
-              <div className="info-row">
-                <p className="info-label">Victims of Occupation:</p>
-                <p className="info-value">Over 100,000 Palestinian martyrs since 1948</p>
-              </div>
-              <div className="info-row">
-                <p className="info-label">Crimes:</p>
-                <p className="info-value">Bombing homes, killing civilians, forced displacement</p>
-              </div>
-              <div className="info-row">
-                <p className="info-label">Status:</p>
-                <p className="info-value">Zionist Entity - Not Recognized</p>
-              </div>
+              <span className="info-label">
+                {t("Victims of Occupation")}:
+                <p className="info-value">
+                  {t("Over 157,000 Palestinian martyrs since 1948")}
+                </p>
+              </span>
+
+              <p className="info-label">
+                {t("Crimes")}:
+                <p className="info-value">
+                  {t("Bombing homes, killing civilians, forced displacement")}
+                </p>
+              </p>
+
+              <p className="info-label">
+                {t("Status")}
+                <p className="info-value">
+                  :{t("Zionist Entity - Not Recognized")}
+                </p>
+              </p>
             </div>
           ) : (
             <div className="flex flex-col items-start justify-between gap-[30px] md:flex-row md:items-center">
               <div className="flex flex-col gap-[10px]">
-                <div className="info-row">
-                  <p className="info-label">Native Name: </p>
-                  <p className="info-value">{data?.name?.official || "N/A"}</p>
-                </div>
-                <div className="info-row">
-                  <p className="info-label">Population: </p>
+                <p className="info-label">
+                  {t("Native Name")}:
                   <p className="info-value">
-                    {data?.population?.toLocaleString() || "N/A"}
+                    {translateKey("NativeNames", nativeName)}
                   </p>
-                </div>
-                <div className="info-row">
-                  <p className="info-label">Region: </p>
-                  <p className="info-value">{data?.region || "N/A"}</p>
-                </div>
-                <div className="info-row">
-                  <p className="info-label">Sub Region: </p>
-                  <p className="info-value">{data?.subregion || "N/A"}</p>
-                </div>
-                <div className="info-row">
-                  <p className="info-label">Capital: </p>
-                  <p className="info-value">{data?.capital?.[0] || "N/A"}</p>
-                </div>
+                </p>
+
+                <p className="info-label">
+                  {t("Population")}:
+                  <p className="info-value">
+                    {population ? population.toLocaleString() : "N/A"}
+                  </p>
+                </p>
+
+                <p className="info-label">
+                  {t("Region")}:
+                  <p className="info-value">
+                    {translateKey("Regions", region)}
+                  </p>
+                </p>
+                <p className="info-label">
+                  {t("Sub Region")}:
+                  <p className="info-value">
+                    {translateKey("Regions", region)}
+                  </p>
+                </p>
+                <p className="info-label">
+                  {t("Capital")}:
+                  <p className="info-value">
+                    {translateKey("Capitals", capital)}
+                  </p>
+                </p>
               </div>
               <div className="flex flex-col gap-[10px]">
-                <div className="info-row">
-                  <p className="info-label">Top Level Domain: </p>
-                  <p className="info-value">{data?.tld?.[0] || "N/A"}</p>
-                </div>
-                <div className="info-row">
-                  <p className="info-label">Currencies: </p>
+                <p className="info-label">
+                  {t("Top Level Domain")}:
+                  <p className="info-value">{tld || "N/A"}</p>
+                </p>
+                <p className="info-label">
+                  {t("Currencies")}:
                   <p className="info-value">
-                    {data?.currencies
-                      ? Object.values(data.currencies)
-                          .map((cur) => cur.name)
+                    {currencies
+                      ? Object.values(currencies)
+                          .map((cur) =>
+                            translateKey("CurrenciesList", cur.name),
+                          )
                           .join(", ")
                       : "N/A"}
                   </p>
-                </div>
-                <div className="info-row">
-                  <p className="info-label">Languages: </p>
+                </p>
+
+                <p className="info-label">
+                  {t("Languages")}:
                   <p className="info-value">
                     {data?.languages
-                      ? Object.values(data.languages).join(", ")
+                      ? Object.values(data.languages)
+                          .map((lang) =>
+                            t(`languages.${lang}`, { defaultValue: lang }),
+                          )
+                          .join(", ")
                       : "N/A"}
                   </p>
-                </div>
+                </p>
               </div>
             </div>
           )}

@@ -34,15 +34,15 @@ body {
 }
 @layer components {
   .info-row {
-    @apply flex flex-1 items-center gap-0.5;
+    @apply flex flex-1 items-start gap-0.5;
   }
 
   .info-label {
-    @apply text-[16px] font-semibold text-nowrap text-[var(--text-color-dark)];
+    @apply flex text-[16px] font-semibold text-[var(--text-color-dark)];
   }
 
   .info-value {
-    @apply text-[16px] font-light text-nowrap text-[var(--text-color-dark)];
+    @apply text-[16px] font-light text-[var(--text-color-dark)];
   }
 }
 .custom-select__control:hover {

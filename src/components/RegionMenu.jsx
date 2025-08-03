@@ -1,34 +1,65 @@
+import { useMemo, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import Select from "react-select";
 
-const options = [
-  { value: "All Region", label: "All Region" },
-  { value: "Africa", label: "Africa" },
-  { value: "America", label: "America" },
-  { value: "Asia", label: "Asia" },
-  { value: "Europe", label: "Europe" },
-  { value: "Oceania", label: "Oceania" },
-];
+const RegionMenu = ({ data, setFilteredData, setFilterDataByRegion }) => {
+  const { t, i18n } = useTranslation();
 
-const RegionMenu = (props) => {
-  const { data, setFilteredData, setFilterDataByRegion } = props;
+  const options = useMemo(
+    () => [
+      {
+        value: "All Region",
+        label: t("Regions.All Region", { defaultValue: "All Region" }),
+      },
+      {
+        value: "Africa",
+        label: t("Regions.Africa", { defaultValue: "Africa" }),
+      },
+      {
+        value: "America",
+        label: t("Regions.America", { defaultValue: "America" }),
+      },
+      { value: "Asia", label: t("Regions.Asia", { defaultValue: "Asia" }) },
+      {
+        value: "Europe",
+        label: t("Regions.Europe", { defaultValue: "Europe" }),
+      },
+      {
+        value: "Oceania",
+        label: t("Regions.Oceania", { defaultValue: "Oceania" }),
+      },
+    ],
+    [i18n.language],
+  );
+
+  const [selectedOption, setSelectedOption] = useState(options[0]);
+
+  // تحديث selectedOption عند تغير اللغة (لضمان ترجمة العنصر المعروض)
+  useEffect(() => {
+    const defaultOption =
+      options.find((opt) => opt.value === selectedOption?.value) || options[0];
+    setSelectedOption(defaultOption);
+  }, [options]);
+
   const handleChange = (e) => {
-    const selectedOption = e.label;
-    console.log(selectedOption);
+    setSelectedOption(e);
 
+    const selectedValue = e.value;
     const filteredByRegion =
-      selectedOption === "All Region"
+      selectedValue === "All Region"
         ? data
         : data.filter(
             (country) =>
-              country.region.toLowerCase() === selectedOption.toLowerCase(),
+              country.region?.toLowerCase() === selectedValue.toLowerCase(),
           );
     setFilteredData(filteredByRegion);
     setFilterDataByRegion(filteredByRegion);
   };
+
   return (
     <div className="w-[200px]">
       <Select
-        defaultValue={options[0]}
+        value={selectedOption}
         onChange={handleChange}
         options={options}
         className="bg-[var(--background-color-white)] text-sm"

@@ -7,10 +7,10 @@ const CountryList = (props) => {
   if (!data || data.length === 0) {
     return <EmptySearch />;
   }
-  
+
   return (
     <div className="m-auto grid max-w-[95rem] gap-x-[40px] gap-y-12 px-6 sm:px-6 md:grid-cols-3 md:px-10 lg:grid-cols-4 lg:px-[84px]">
-      {data.length && (
+      {data.length &&
         data.map((country) => (
           <Link
             className="w-full"
@@ -21,7 +21,7 @@ const CountryList = (props) => {
               flag={country.flags.svg}
               name={
                 country.name.common === "Israel"
-                  ? "Occupied Palestine"
+                  ? "Occupied Palestinian"
                   : country.name.common
               }
               population={country.population.toLocaleString()}
@@ -29,9 +29,7 @@ const CountryList = (props) => {
               capital={country.capital?.[0]}
             />
           </Link>
-        ))
-      ) 
-      }
+        ))}
     </div>
   );
 };
